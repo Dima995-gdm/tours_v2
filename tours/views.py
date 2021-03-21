@@ -1,4 +1,4 @@
-from django.http import HttpResponseNotFound, HttpResponseServerError
+from django.http import HttpResponseNotFound, HttpResponseServerError, Http404
 from django.shortcuts import render
 from django.views import View
 from stepik_tours import data
@@ -20,7 +20,7 @@ class MainView(View):
 class DepatureView(View):
     def get(self, request, departure):
         if departure not in data.departures.keys():
-            raise HttpResponseNotFound
+            raise Http404
 
         departure_data = []  # список туров по отбору города выезда
         departures = data.departures.items()
@@ -46,7 +46,7 @@ class DepatureView(View):
 class TourView(View):
     def get(self, request, tour_id):
         if tour_id not in data.tours.keys():
-            raise HttpResponseNotFound
+            raise Http404
 
         tour_info = data.tours.get(tour_id)
         departure_info = data.departures[tour_info['departure']]
